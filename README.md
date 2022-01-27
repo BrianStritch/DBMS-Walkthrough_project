@@ -65,8 +65,8 @@
  - We'll start by creating a new file called models.py within our taskmanager package.
   - see numbered notes in file for details, numbered in order of code writing
 
-## __ back to routes.py __
- - At the top of the routes file, we need to import the classes from models in order to generate our database next.
+## __back to routes.py __
+ - At the top of the routes file, we need to import the classes from models.py in order to generate our database next.
 
 ## __taskmanager database__  and __Migrating your database__
 - we've specified that our database will be
@@ -96,6 +96,23 @@
       That's it, pretty simple enough, our Postgres database should be populated with these two
       tables and their respective columns and relationships.
       Let's exit the Python interpreter by typing exit().
+   - To test that the tables exist in your database you type into the terminal:
+       - psql -d taskmanager
+       - \dt 
+       this should list the tables in the console.
+       like this:
+        -   Schema |   Name   | Type  | Owner  
+            --------+----------+-------+--------
+            public | category | table | gitpod
+            public | task     | table | gitpod
+            (2 rows)
+
+## __end of stage 2__
+ - we've set up our tables and created and migrated our database
+
+# __STAGE 3__
+
+
 
 
 
