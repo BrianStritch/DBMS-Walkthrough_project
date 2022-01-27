@@ -22,7 +22,7 @@
      - from flask_sqlalchemy import SQLAlchemy
 
     
-
+# __STAGE 1__
 
 ## __ env.py __
  - touch env.py 
@@ -44,8 +44,20 @@
     We're going to start using some Flask functionality, so we can import render_template from flask to start with.
 
 
-## __next heading__
+## __run.py__
+ - Now it's time to create the main Python file that will actually run the entire application.
 
-## __next heading__
+## __templates__
+ - we need to render some sort of front-end template to verify that the application is running successfully.
+    Within our taskmanager package, let's create a new directory called 'templates', which
+    is where Flask looks for any HTML templates to be rendered.
+    Then, within this templates directory, we will create a new file called base.html, which
+    is what will be rendered from our routes.py file.
+- We can type python3 run.py in order to launch our main file, which will import the necessary taskmanager package 
+    and all of its dependencies we've specified.
 
-## __next heading__
+## __End of stage 1__
+ - We've learned how to set up a basic Flask application using the Flask-SQLAlchemy package.
+
+# __STAGE 2__
+ - n
