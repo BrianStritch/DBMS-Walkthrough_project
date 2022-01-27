@@ -22,7 +22,7 @@
      - from flask_sqlalchemy import SQLAlchemy
 
     
-# __STAGE 1__
+# __STAGE 1 Putting the Basics into Place__
 
 ## __ env.py __
  - touch env.py 
@@ -59,5 +59,5 @@
 ## __End of stage 1__
  - We've learned how to set up a basic Flask application using the Flask-SQLAlchemy package.
 
-# __STAGE 2__
+# __STAGE 2 Creating the Database__
  - n
