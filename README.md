@@ -270,7 +270,9 @@
          
 ## __end of stage 3__
    - Save all of your files, and if your app isn't currently running, go ahead and start it within
-     the terminal by typing 'python3 run.py' and then open your browser.
+      the terminal by typing 'python3 run.py' and then open your browser.
+   - We now have the basic front-end template set up with a navbar, a footer, and a tasks template
+      that uses Template Inheritance to extend from the base file.
 
 
 
