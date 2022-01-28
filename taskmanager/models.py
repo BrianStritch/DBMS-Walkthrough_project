@@ -89,7 +89,7 @@ from taskmanager import db
 
 # 2
 class Category(db.Model):
-    # schema for the category model
+    # 4 schema for the category model
     id = db.Column(db.Integer, primary_key=True)
     # 6 
     category_name = db.Column(
@@ -106,7 +106,7 @@ class Category(db.Model):
 
 # 3
 class Task(db.Model):
-    # schema for the category model    
+    # 4 schema for the category model    
     id = db.Column(db.Integer, primary_key=True)
     # 7
     task_name = db.Column(db.String(50), unique = True, nullable = False)

@@ -21,7 +21,7 @@ from taskmanager.models import Category, Task
 # 3
 @app.route("/")
 def home():
-    return render_template("base.html")
+    return render_template("tasks.html")
 
 """
 Save the file, and now it's time to create the main Python file that will actually run the entire application.
