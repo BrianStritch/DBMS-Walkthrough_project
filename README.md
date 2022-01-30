@@ -133,13 +133,13 @@
       - <!-- Compiled and minified JavaScript -->
       - <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 ##### __static__
-  - In addition to using Materialize, we are going to incorporate some of our own custom CSS and JavaScript.
-      When using a templating language such as Flask, any assets that we use such as images, CSS,
-      and JavaScript, need to be stored in a directory called 'static'.
-     
-  - Let's create this new folder within our taskmanager package, 
-      - we'll also want to add the css/ and js/ folders within this static directory.
-      - As with tradition, we'll call our CSS file 'style.css', and our JavaScript file 'script.js' in their respective folders. 
+      - In addition to using Materialize, we are going to incorporate some of our own custom CSS and JavaScript.
+            When using a templating language such as Flask, any assets that we use such as images, CSS,
+            and JavaScript, need to be stored in a directory called 'static'.
+         
+      - Let's create this new folder within our taskmanager package, 
+            - we'll also want to add the css/ and js/ folders within this static directory.
+            - As with tradition, we'll call our CSS file 'style.css', and our JavaScript file 'script.js' in their respective folders. 
 ##### __back to base.html__ 
       - Now, in order to link to any static file that we have, it's important to note that we must use the correct syntax.
             You should be rather familiar with just adding the standard front-end method.
@@ -267,17 +267,17 @@
          add an h3 element for 'Tasks', with some of the Materialize helper classes.
 
 ##### __Back to routes.py__
- - Finally, let's go back to our routes.py file, and update the rendered template to be 'tasks.html' instead.
- 
- - This will become our home page now, so that when a user visits our site, they're brought
-      to the tasks page, which will automatically extend all of the content from our base template.
+      - Finally, let's go back to our routes.py file, and update the rendered template to be 'tasks.html' instead.
+      
+      - This will become our home page now, so that when a user visits our site, they're brought
+            to the tasks page, which will automatically extend all of the content from our base template.
 
          
 ##### __end of stage 3__
-   - Save all of your files, and if your app isn't currently running, go ahead and start it within
-      the terminal by typing 'python3 run.py' and then open your browser.
-   - We now have the basic front-end template set up with a navbar, a footer, and a tasks template
-      that uses Template Inheritance to extend from the base file.
+      - Save all of your files, and if your app isn't currently running, go ahead and start it within
+         the terminal by typing 'python3 run.py' and then open your browser.
+      - We now have the basic front-end template set up with a navbar, a footer, and a tasks template
+         that uses Template Inheritance to extend from the base file.
 
 ## __STAGE 4 Adding Categories__
  - Before we can start adding tasks to our database, we first need to have some functionality that handles the categories.
@@ -285,11 +285,11 @@
    have a Category assigned, which makes it the foreign key to the Category model.
    In this video, we'll build a front-end template that then allows us to add new categories to the database.
  ##### __Adding categories__
-  - Let's start by creating a couple new templates; categories.html and then another template called add_category.html.
-      Both of these files will of course be extended from the base template, and have their code
-      injected into the 'content' {% block %}, so we can simply copy/paste from the 'tasks' template.
-      Then, update the
-      title for each, which will be "Categories" and "Add Category".
+      - Let's start by creating a couple new templates; categories.html and then another template called add_category.html.
+            Both of these files will of course be extended from the base template, and have their code
+            injected into the 'content' {% block %}, so we can simply copy/paste from the 'tasks' template.
+            Then, update the
+            title for each, which will be "Categories" and "Add Category".
 ##### __categories.html__
    For now, we aren't going to focus on viewing each of the categories
 
@@ -422,4 +422,120 @@ users to add a new category to the database.
  - when i was trying to add a category it was throwing an error where the database was not found. i had to exit the flask, set_pg, open psql, exit psql, and then reload flask. this then allowed it to work.
 
 ## __Stage 5__
+In the last stage we managed to add a new category into our database, which is just one part of performing CRUD functionality.
+The C in CRUD means to Create, by creating a new category and having it post to the database.
+In this stage we are going to focus on the R in CRUD, which means to Read from the database.
+
+If your application isn't currently running, go ahead and start it in the terminal by typing 'python3 run.py' and navigate to the Categories page from the navbar. On this page, we'd like to retrieve all of the categories listed in the database, and
+display them to our users here. Currently, from the previous stage, we've only added a single category so far, which
+was "brian", but we don't see it displayed here yet.
+
+From the introduction video, we mentioned the Materialize 'card' component, and we used
+the card class in the last video on our form.
+This time, we are going to include some buttons in the card, and we need to use a different
+version of the card component, so let's head over to the Materialize site.
+
+###### __Materializecss.com website__
+      - From the Cards page within the Materialize components, we are going to use the Basic Card at the top, which already comes 
+         with two links.
+
+###### __back to categories.html__
+      - just underneath the row that contains the 'Add Category' button.
+            The current grid sizes listed from this code show that the card will display across the
+            entire screen on small devices, and only half the screen on medium devices and up.
+            We don't necessarily need the cards to be that big on larger devices, so let's add another grid class of 'l3'.
+            This means, for larger devices, the card should occupy 25% of the parent element, since the
+            number of spaces available per row is 12, and means it can contain 4 cards per row.
+            We can design the card however we'd like, so choose any color combination from the helper
+            color classes, making sure that your text and background don't contrast each other.
+            Also, since this will only contain the name of the category itself, then I'm going to
+            add the helper class of 'center-align', and remove the paragraph tag entirely.
+
+       - We aren't finished yet, but let's save the file, and reload the page to see how things are looking.
+            As you can see, the card is indeed spanning only 25% of the parent element, which, if
+            you recall, is our main-container class from the base template.
+            If we check the responsiveness using the Developer Tools, the card flows smoothly, only spanning
+            50% of the width on medium devices, and on smaller devices, the entire width.
+            However, if you notice, the links that we have so far are rather squashed, and this
+            happens when the content in those links are too long, but the card is set to specific size.
+            For this project, these links will actually become buttons, and the text will be much
+            shorter, since they will be the buttons for Editing and Deleting our categories later.
+            Let's go back to the workspace, and update those links accordingly.
+            The first link will be 'Edit', and the second link will be 'Delete'.
+            I mentioned that these will be buttons instead of links, so let's apply the Materialize class
+            of 'btn' to make these styled like buttons.
+            We will then style the buttons using more of the Materialize helper classes, just make
+            sure the background and text don't have color contrast issues.
+            Now, it's time to start building the code that will extract the data from within our
+            database, so let's head over to the routes.py file.
+
+###### __back to routes.py__
+       - In the previous video, we added a temporary placeholder route, which allows us to pull
+            up the categories template itself.
+            All we need to do here now, is add some code to query the database so we can use that within our template.
+            First, let's define a new variable within the categories function, which will also be
+            called categories to keep things consistent.
+            We just need to query the 'Category' model that is imported at the top of the file from
+            our models.py file, and we can do that by simply typing:
+            Category.query.all()
+            Sometimes though, categories might be added at different times, so this would have the
+            default method of sorting by the primary key when things get added.
+            Let's go ahead and use the .order_by() method, and have it sort by the key of 'category_name'.
+            We also need to make sure that we tell it the specific model as well, even though it
+            might seem redundant, it's possible to use other sorting methods.
+            You need to make sure the quantifier, which is .all() in this case, is at the end of the
+            query, after the .order_by() method.
+            Whenever we call this function by clicking the navbar link for Categories, it will query
+            the database and retrieve all records from this table, then sort them by the category name.
+            Now, all that's left to do here is to pass this variable into our rendered template,
+            so that we can use this data to display everything to our users.
+            By using the .all() method, this is actually what's known as a Cursor Object, which is
+            quite similar to an array or list of records.
+            Even if the result comes back with a single record, it's still considered a Cursor Object,
+            and sometimes Cursor Objects can be confusing when using them on front-end templates.
+            Thankfully, there's a simple Python method that can easily convert this Cursor Object
+            into a standard Python list, by wrapping the variable inside of 'list()'.
+            You might be slightly confused as to what 'categories=categories' represents, so let's quickly explain this part.
+            The first declaration of 'categories' is the variable name that we can now use within the HTML template.
+            The second 'categories', which is now a list(), is the variable defined within our function
+            above, which is why, once again, it's important to keep your naming convention quite similar.
+            Perfect, now that we have this template variable available to us, let's go back to our categories.html
+
+###### __back to categories.html__
+       - let's go back to our categories.html template, and start incorporating it into our cards.
+            Eventually, we are going to have more than one category listed here, but so far we've
+            only added the single category of 'brian'.
+            However, let's prepare the code to recognize multiple cards, by using the Jinja syntax of a for-loop.
+            We don't want each card to stack on top of each other, but instead, to flow within the
+            same row, each having their own column.
+            Make sure to add the for-loop just inside of the row, so everything within the row is repeated and looped.
+            The closing {% endfor %} should be just after the div for this column, so follow that down,
+            and add the closing element there.
+            Similar to JavaScript, we need to define a new index for each iteration of this loop,
+            so to keep things consistent, we will call ours 'category'.
+            This means that for each 'category' in the ‘list of categories' being passed over from
+            our Python function, it will generate a new column and card.
+            Finally, we need to display the actual category name that's stored within our database, so
+            we can update the card-title.
+            Since we are within a for-loop, we need to use the newly defined index variable of 'category'.
+            We also need to use dot-notation and tell it which key should be printed here, so in
+            this case, it should be 'category.category_name', which means, “this category’s key of category_name”.
+            If you wanted to show the primary key instead, that's stored within our database as 'id',
+            so it would be 'category.id' for example.
+###### __End of stage 5 __
+         That's all there is to it, so make sure all of your files are saved now, then go ahead
+         and reload the preview page.
+         Wonderful, you can see that we now have a card for the 'Travel' category that we added
+         in the previous video, which confirms that it was indeed added successfully.
+         Let's go ahead and put that to the test, by adding a few more new categories now.
+         Pause the video, and add some of your own custom Categories.
+         Welcome back, I hope you managed to add a few more categories to your database, like
+         you can see I have here on the screen now.
+         As you can see, each category is successfully adding to the database, as well as displaying
+         the card for each one, and sorting them alphabetically by the category name.
+         We have now covered 50% of CRUD functionality, allowing users to Create and Read records from the database.
+         In the next video, we are going to focus on the U in CRUD, which will allow users to Update
+         the category name by clicking the 'Edit' button.
+
+
 

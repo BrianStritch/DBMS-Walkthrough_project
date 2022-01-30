@@ -21,7 +21,7 @@
     we could redirect the user back to the 'categories' page.
     We'll need to import the 'redirect' and 'url_for' classes at the top of the file from our flask import.
 
-6. 
+6. back in stage 5 - specific notes in readme
 """
 # 1
 from flask import render_template, request, redirect, url_for
@@ -43,7 +43,9 @@ Save the file, and now it's time to create the main Python file that will actual
 # back in stage 4 to set button function
 @app.route("/categories")
 def categories():
-    return render_template("categories.html")
+    # 6
+    categories = list(Category.query.order_by(Category.category_name).all())
+    return render_template("categories.html", categories = categories)
 
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
