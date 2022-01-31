@@ -279,7 +279,7 @@
       - We now have the basic front-end template set up with a navbar, a footer, and a tasks template
          that uses Template Inheritance to extend from the base file.
 
-## __STAGE 4 Adding Categories__
+## __STAGE 4 CREATE - Adding Categories__
  - Before we can start adding tasks to our database, we first need to have some functionality that handles the categories.
    If you recall from when we built the database schema in a previous video, each Task must
    have a Category assigned, which makes it the foreign key to the Category model.
@@ -421,7 +421,7 @@ users to add a new category to the database.
 ###### __Important note__
  - when i was trying to add a category it was throwing an error where the database was not found. i had to exit the flask, set_pg, open psql, exit psql, and then reload flask. this then allowed it to work.
 
-## __Stage 5__
+## __Stage 5 READ - reading the categories we have added.__
 In the last stage we managed to add a new category into our database, which is just one part of performing CRUD functionality.
 The C in CRUD means to Create, by creating a new category and having it post to the database.
 In this stage we are going to focus on the R in CRUD, which means to Read from the database.
@@ -536,6 +536,137 @@ version of the card component, so let's head over to the Materialize site.
          We have now covered 50% of CRUD functionality, allowing users to Create and Read records from the database.
          In the next video, we are going to focus on the U in CRUD, which will allow users to Update
          the category name by clicking the 'Edit' button.
+
+
+## __Stage 6 UPDATE - update the categories__
+
+###### __edit_category.html__
+    - The first thing we need to do is make a duplicate copy of the 'add_category' template, and let's
+         rename this to 'edit_category.html' instead.
+         Anywhere that you see 'Add Category' on this template, go ahead and replace that with 'Edit Category',
+         which should be a total of three times, plus a quick update to the icon.
+         The form is almost complete, but if you notice, the form's action attribute is pointing to
+         a new function called 'edit_category', which we haven't created yet.
+         Let's go over to the routes.py file, and we are going to create a new function.
+
+###### __back to routes.py__
+     - For the app route URL, let's call this "/edit_category", and once again, we will be using this as a
+         dual-purpose for both the "GET" and "POST" methods.
+         The function name will match, so that will be "edit_category".
+         To start with, we will only focus on the "GET" method, which will get the template, and render it on screen for us.
+         We can simply return render_template using the new file we created, "edit_category.html".
+         However, we need some sort of mechanism for the app to know which specific category we intend to update.
+
+###### __back to categories.html__
+    - let's open the template for all categories, which contains
+         the for-loop we built in the last video.
+         If you recall, within this for-loop, we have the variable of 'category' that is used for
+         each iteration of this loop, and we have targeted the 'category_name' field.
+         Due to the fact that our 'Edit' and 'Delete' buttons are still within the for-loop, we
+         can use that variable to identify the specific category primary key using '.id'.
+         Let's go ahead and create the href url_for() method, which will be wrapped in double curly-brackets.
+         This behaves in the same way that we called the navbar links, or the CSS and JavaScript
+         files from within our static directory.
+         In addition to calling our new 'edit_category' function, we need to pass another argument
+         to specify which particular category we are attempting to update.
+         Make sure you add a comma after the single-quotes, which identifies that we are calling the function with some data included.
+         For the argument name, it can be whatever we'd like, and since we need to use something
+         unique, it's best to use the primary key of the ID.
+         I'm going to call this 'category_id', and we can now set that equal to the current 'category.id' using dot-notation again.
+         Since we originally added the 'brian' category as the first record on our database, its ID will be '1'.
+         Now, we can head back over to the routes.py file.
+
+###### __back to routes.py__
+    -  since we've given an argument of 'category_id' when clicking the 'Edit' button, this also needs 
+         to appear in our app.route. These types of variables being passed back into our Python functions must be wrapped
+         inside of angle-brackets within the URL. We know that all of our primary keys will be integers, so we can cast this as an 'int'. We also need to pass the variable directly into the function as well, so we have the
+         value available to use within this function. If you have attempted to save these changes and load the page, then you're going to get an error. This is a very common error, and something that all developers should know how to understand,
+         so let's save everything, and load the live preview.
+
+###### __On the live page__
+    - Once that's loaded, navigate to the Categories page, and then hover over any of the 'Edit'
+         buttons for some of the categories we've created.
+         If you notice in the bottom-left corner, you can see that the href for the 'Travel' card
+         shows our new function of '/edit_category', and then the number '1'.(in the lower left corner of the page).
+    - You can do this same thing, by using the Developer Tools and inspect the Edit button in the DOM.
+         Jinja has converted the url_for() method into an actual href, and injected the respective
+         ID into the argument we added of 'category_id'.
+         It's the same for any of these cards, each with their own ID applied.
+         However, try clicking on one of the Edit buttons, and you'll notice the Werkzeug Error.
+         "Could not build url endpoint 'edit_category'. Did you forget to specify values ['category_id']?"
+         The really fantastic thing with any Flask error, is that it will always tell you exactly
+         which file and line number is causing the specific error.
+         Normally, this can be found towards the bottom of the error lines, and you want to look for
+         the code in the blue rows that matches your own code.
+         As you can see here, we're calling the URL for the edit_category function, which is listed
+         on the edit_category.html template, from line 7.
+         Essentially what happened is once we added the primary key of ID into our app.route function,
+         it will now always expect this for any link that calls this function.
+         Let's go back to the edit_category template
+
+###### __back to edit_category.html__
+    - category template, and sure enough on line 7 we have the url_for method.
+         All we need to do is provide the same exact argument of 'category_id' like we did on the href for the Edit button.
+         Again, separate the argument with a comma after the single-quotes, and the variable
+         name we assigned was 'category_id'.
+         This will be set to 'category.id' as well for the value.
+         Even though we added this to the URL now and saved the file, you will still get an error
+         saying "'category' is undefined".
+         You might be wondering where this 'category' value comes from, since this isn't part of
+         a for-loop like on the categories template.
+         That's the next step, so go ahead and return to your routes.py file.
+
+###### __back to routes.py__
+    - In order for this function to know which specific category to load, we need to attempt to find
+         one in the database using the ID provided from the URL.
+         The template is expecting a variable 'category', so let's create that new variable now.
+         Using the imported Category model from the top of the file, we need to query the database,
+         and this time we know a specific record we'd like to retrieve.
+         There's a SQLAlchemy method called '.get_or_404()', which takes the argument of 'category_id'.
+         What this does is query the database and attempts to find the specified record using the data
+         provided, and if no match is found, it will trigger a 404 error page.
+         Now, we can pass that variable into the rendered template, which is expecting it to be called
+         'category', and that will be set to the defined 'category' variable above.
+         The page should load now without any errors, however, if you notice, it doesn't show us
+         the current value of our category, and the form doesn't do anything just yet.
+
+###### __back to edit_category.html__
+    - Within the edit_category template, now that we have the category retrieved from the database,
+         we need to add its value into the input field.
+         This is a variable, so we need to wrap it inside of double curly-brackets, and then
+         we can target the 'category_name' from this variable of 'category' using dot-notation again.
+         If you save those changes, and then reload the page and click on any of the Edit buttons
+         now, it should pre-fill the form with the existing value from our database.
+
+The final step now, is to add the "POST" functionality so the database actually gets updated with the requested changes.
+
+###### __back to routes.py__
+    - Back within our routes.py file, just after the 'category' variable being defined, let's
+         conditionally check if the requested method is equal to "POST".
+         If so, then we want to update the category_name for our category variable, and we'll set that
+         to equal the form's name-attribute of 'category_name'.
+         After that, we need to commit the session over to our database.
+         Finally, if that's all successful, we should redirect the users back to the categories
+         function, which will display all of them in the cards once again.
+         Save all of your changes, and let's go back to the live preview.
+
+###### __back to live preview__
+For this demonstration, I'm going to quickly add a new test category, which we can manipulate and update all we want.
+Once that's added to the database, go ahead and click the Edit button for that category.
+So far so good, and the existing value is listed as 'Test'.
+Let's update that to something different, such as 'Miscellaneous', and then click the button to submit the form.
+Wonderful, no errors this time, and we're redirected back to the list of all categories,
+which confirms that the original 'Test' card is now updated to be 'Miscellaneous'.
+
+##### __end of stage 6__
+By now, you should be fairly comfortable with Creating, Reading, and now Updating records.
+We only have one more section from the CRUD functionality remaining, which is D for Deleting
+items from the database, which is what we'll be doing in the next lesson.
+
+## __Stage 7__
+
+
+
 
 
 
