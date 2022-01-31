@@ -50,6 +50,21 @@
          Finally, if that's all successful, we should redirect the users back to the categories
          function, which will display all of them in the cards once again.
          Save all of your changes, and let's go back to the live preview.
+
+# back in stage 7
+11. This will be a brand new function, so let's create a new app.route and call it "/delete_category".
+        As is tradition by now, our function name will take the same name, "delete_category".
+        In the same exact way that we specified which category we wanted to edit from our last video, we need to do the same thing here.
+        This function needs to know which particular category we would like to delete from the data base.
+        Let's actually copy a few things from the 'edit' function above.
+        First, we need to pass the category ID into our app route and function, and once again,
+        we are casting it as an integer.
+        Next, we should attempt to query the Category table using this ID, and store it inside of a variable called 'category'.
+        If there isn't a matching record found, then it should automatically return an error 404 page.
+        Then, using the database session, we need to perform the .delete() method using that
+        'category' variable, and then commit the session changes.
+        Finally, once that's been deleted and our session has been committed, we can simply
+        redirect the user back to the function above called "categories".
 """
 # 1
 from flask import render_template, request, redirect, url_for
@@ -96,6 +111,12 @@ def edit_category(category_id):
         db.session.commit()
         return redirect(url_for("categories"))
     return render_template("edit_category.html", category = category)
-    
-    
+# 11   
+@app.route("/delete_category/<int:category_id>")
+def delete_category(category_id): 
+    category = Category.query.get_or_404(category_id)
+    db.session.delete(category)
+    db.session.commit()
+    return redirect(url_for("categories"))
+
 

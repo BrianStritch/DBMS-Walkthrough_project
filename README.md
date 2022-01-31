@@ -663,9 +663,91 @@ By now, you should be fairly comfortable with Creating, Reading, and now Updatin
 We only have one more section from the CRUD functionality remaining, which is D for Deleting
 items from the database, which is what we'll be doing in the next lesson.
 
-## __Stage 7__
+## __Stage 7 DELETE - deleting the categories / entries__
+So far, we've learned 3 of the 4 CRUD functionalities, to Create, Read, and Update records from our database.
+The final CRUD method is to give users the ability to Delete records, which is what we will cover in this video.
+In order to allow users to delete a record from the database, we actually don't need to create a new template.
+The entire functionality is done from within our back-end function on the routes.py file, so let's open that file.
 
+###### __back to routes.py__
+    - This will be a brand new function, so let's create a new app.route and call it "/delete_category".
+         As is tradition by now, our function name will take the same name, "delete_category".
+         In the same exact way that we specified which category we wanted to edit from our last video, we need to do the same thing here.
+         This function needs to know which particular category we would like to delete from the data base.
+         Let's actually copy a few things from the 'edit' function above.
+         First, we need to pass the category ID into our app route and function, and once again,
+         we are casting it as an integer.
+         Next, we should attempt to query the Category table using this ID, and store it inside of a variable called 'category'.
+         If there isn't a matching record found, then it should automatically return an error 404 page.
+         Then, using the database session, we need to perform the .delete() method using that
+         'category' variable, and then commit the session changes.
+         Finally, once that's been deleted and our session has been committed, we can simply
+         redirect the user back to the function above called "categories".
 
+###### __back to categories.html__
+    - The only thing that's left to do now, is to update our href link from the categories template.
+         The pattern is identical to the Edit button, so as a challenge, I want you to pause the
+         video here, and see if you can figure this out yourself.
+         Hopefully you've managed that on your own, but if not, all we need to do is simply copy
+         the Edit button href, and then paste it into the href for the delete button.
+         The only difference though, is that we need to update the function name to "delete_category".
+         As you can see, since we are within the for-loop of all categories, it's using the current
+         iteration variable of 'category', and then targeting the key of 'id' from that record.
+         The 'category_id' assigned is just the variable name we're passing into the app.route function
+         that we just created within the routes.py file.
+         Make sure you save all changes to your files, and then if your app isn't currently running, go ahead and start it now.
+         
+###### __back to live page__
+    - Once the page is loaded, navigate to the Categories page, and hover over any of the 'Delete' buttons.
+         You can see the URL that will generate if the button is clicked.
+         Before we actually go ahead and click this delete button, I want to go over a few very
+         important things to consider when creating any projects.
+ __IMPORTANT__
+
+         The first thing you should remember, is that once the delete button is clicked, then it
+         will completely delete the record from the database for good.
+         This is considered bad practice, since there isn't any form of defensive programming in place.
+         Ideally, you should include some sort of blocking mechanism that first has the user confirm
+         whether or not they'd actually like to delete the record.
+         A common method for this would be to use a modal for example.
+         Instead of calling the 'delete_category' function within the href, what it should do is to trigger the modal to open up.
+         Within this modal, you'll have some message to the user to confirm their action of deleting the record.
+         If they definitely want to delete the record, then the button within the modal would be
+         the actual href to call the delete function.
+         Also, something to note when using modals, is that they generally have a custom ID attached
+         to them in order to open the modal on screen.
+
+###### __materialize and live page preview__
+    - You can see from the Materialize documentation here, the href to call the modal uses the
+         same ID name to launch the actual modal.
+         If you use this method within your Jinja for-loop of all categories, then it will only work
+         for the very first category, and the other modals will not open.
+         This is because IDs should always be unique, one per page.
+         The trick around that, is to use something unique within the for-loop to identify the
+         appropriate modal being generated per category.
+         We already know that each category has a unique primary key, so we can simply have each modal
+         being generated within this for-loop to utilize that primary key as well.
+         The example here would be to call the ID "modal-{{category.id}}" so each modal generated would be transpiled
+         to the HTML as modal-1, modal-2, modal-3, and so on.
+         The other important thing to make note of on your projects, is considering user authentication.
+         In an ideal world, you wouldn't want just any random stranger to be able to edit and delete your database records.
+         You would normally only show these edit and delete buttons if the owner of those categories was the one viewing the page.
+         For example, if Bob added the Category of "Travel", and Bob is currently logged in to
+         his profile, then only Bob should be able to see these buttons.
+         That way, any guest other than Bob, such as Mary, would be able to see all categories,
+         but not have access to manipulate that data on the database.
+         This is why user authentication can be something to consider later, and there are several ways
+         to accomplish that on a project.
+         Now that I've mentioned both defensive programming and user authentication, it's finally time
+         to go ahead and delete one of these categories.
+         For this demonstration, I'm going to delete the category that we updated in the last video.
+         Go ahead and click on the Delete button for 'Miscellaneous'.
+         If everything is properly linked up, then the page should reload, and our category should
+         now be successfully deleted, which it is.
+         Wonderful, we now have the full CRUD functionality working perfectly.
+         Users can create new records, retrieve existing records, update records, and finally, they can now delete records.
+         We have made great progress on this application so far, but we still need to allow CRUD functionality for our Tasks model.
+         In the next lesson, we will allow users to create new Tasks.
 
 
 
