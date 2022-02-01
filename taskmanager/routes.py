@@ -3,23 +3,32 @@
 
 2. Then, from our main taskmanager package, let's import both 'app' and 'db'.
 
-3. For simplicity to get the app running, we'll create a basic app route using the root-level directory of slash.
-    This will be used to target a function called 'home', which will just return the rendered_template
+3. For simplicity to get the app running, we'll create a basic app route 
+    using the root-level directory of slash.
+    This will be used to target a function called 'home', 
+    which will just return the rendered_template
     of "base.html" that we will create shortly.
 
 ########### after writing models.py
-4. we need to import these classes from models.py in order to generate our database next.
+4. we need to import these classes from models.py in order to generate 
+    our database next.
 
 # back in stage 4 to set button function
-5. If the requested method is equal to POST, then we will create a new variable called
-    'category', which will be set to a new instance of the Category() model imported at the top of the file.
+5. If the requested method is equal to POST, 
+    then we will create a new variable called
+    'category', which will be set to a new instance of the 
+    Category() model imported at the top of the file.
 
-    Once we've grabbed the form data, we can then 'add' and 'commit' this information to the
-    SQLAlchemy database variable of 'db' imported at the top of the file.
-    This will use the database sessionmaker instance that we learned about in some of the previous videos.
-    After the form gets submitted, and we're adding and committing the new data to our database,
+    Once we've grabbed the form data, we can then 'add' and 
+    'commit' this information to the SQLAlchemy database variable 
+    of 'db' imported at the top of the file.
+    This will use the database sessionmaker instance that we learned 
+    about in some of the previous videos.
+    After the form gets submitted, and we're adding and committing 
+    the new data to our database,
     we could redirect the user back to the 'categories' page.
-    We'll need to import the 'redirect' and 'url_for' classes at the top of the file from our flask import.
+    We'll need to import the 'redirect' and 'url_for' classes at the 
+    top of the file from our flask import.
 
 6. back in stage 5 - specific notes in readme
 
@@ -65,6 +74,8 @@
         'category' variable, and then commit the session changes.
         Finally, once that's been deleted and our session has been committed, we can simply
         redirect the user back to the function above called "categories".
+# back in stage 8
+12. specific notes in readme
 """
 # 1
 from flask import render_template, request, redirect, url_for
@@ -72,7 +83,7 @@ from flask import render_template, request, redirect, url_for
 from taskmanager import app, db
 
 # 4 
-from taskmanager.models import Category, Task
+from taskmanager.models import Category, Task, Tasks
 
 # 3
 @app.route("/")
@@ -119,4 +130,20 @@ def delete_category(category_id):
     db.session.commit()
     return redirect(url_for("categories"))
 
-
+# 12
+@app.route("/add_task", methods=["GET", "POST"])
+def add_task():  
+    categories = list(Category.query.order_by(Category.category_name).all())  
+    if request.method == "POST":
+        task = Tasks(
+            task_name = request.form.get("task_name"),
+            task_description = request.form.get("task_description"),
+            is_urgent = bool(True if request.form.get("is_urgent") else False),
+            due_date = request.form.get("due_date"),
+            category_id = request.form.get("category_id")
+        )
+        category = Category(category_name=request.form.get("category_name"))
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for("home"))
+    return render_template("add_task.html", categories = categories)

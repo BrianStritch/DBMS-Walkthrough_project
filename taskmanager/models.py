@@ -124,4 +124,21 @@ class Task(db.Model):
 
     # 9  ---- return back to our routes.py file now.
 
+# 3
+class Tasks(db.Model): # this is a copy of the above as mispelling in category_id
+    # 4 schema for the category model    
+    id = db.Column(db.Integer, primary_key=True)
+    # 7
+    task_name = db.Column(db.String(50), unique = True, nullable = False)
+    task_description = db.Column(db.Text, nullable = False)
+    is_urgent = db.Column(db.Boolean, default = False, nullable = False)
+    due_date = db.Column(db.Date, nullable = False)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete = "CASCADE"), nullable = False)
+    # 5
+    def __repr__(self):
+        # __repr__ to represent itself in the form of a string
+        return "#{0} - Task {1} | Urgent: {2}".format(
+            self.id, self.task_name, self.is_urgent 
+        )
 
+    # 9  ---- return back to our routes.py file now.
