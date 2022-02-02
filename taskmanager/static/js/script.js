@@ -18,6 +18,10 @@
     let selects = document.querySelectorAll('select');
     M.FormSelect.init(selects);
 
+    // this is added from function below to initialize the collapsible in tasks.html
+    let collapsibles = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(collapsibles);
+
   });
 
   // Or with jQuery
@@ -52,3 +56,15 @@
   // $(document).ready(function(){
   //   $('select').formSelect();
   // });
+
+// // this is the code block to initialize the collapsible
+//   document.addEventListener('DOMContentLoaded', function() {
+//     var elems = document.querySelectorAll('.collapsible');
+//     var instances = M.Collapsible.init(elems, options);
+//   });
+
+//   // Or with jQuery
+
+//   $(document).ready(function(){
+//     $('.collapsible').collapsible();
+//   });

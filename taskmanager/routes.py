@@ -76,6 +76,14 @@
         redirect the user back to the function above called "categories".
 # back in stage 8
 12. specific notes in readme
+
+13. READ TASKS SECTION IN README
+
+14. Oftentimes, it's actually better to convert your queries into Python lists.
+        Let's navigate to our routes.py file, and since we want this to occur only for queries
+        that have more than one result, let's find any that end with '.all()'.
+        As you can see, we've been doing this already, which is considered best practice, wrapping any query in a Python list().
+
 """
 # 1
 from flask import render_template, request, redirect, url_for
@@ -88,7 +96,10 @@ from taskmanager.models import Category, Task, Tasks
 # 3
 @app.route("/")
 def home():
-    return render_template("tasks.html")
+    # 13
+    tasks = list(Tasks.query.order_by(Tasks.id).all())
+    return render_template("tasks.html", tasks = tasks)
+
 
 """
 Save the file, and now it's time to create the main Python file that will actually run the entire application.
@@ -147,3 +158,6 @@ def add_task():
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("add_task.html", categories = categories)
+
+
+

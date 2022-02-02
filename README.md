@@ -885,12 +885,109 @@ building our CRUD functionality for our Tasks.
          That's it, everything should be ready now, so go ahead and save all of your files, and
          start the application in your Terminal if it's not already running.
 
+## __Stage 8 READ - READ the tasks__
+Let's get started to create the Read method for our CRUD functionality of our Tasks.
+The first thing we need to do is extract all of the tasks from our database, so let's open the routes.py file.
+
+###### __routes.py__
+    - Since we've got our tasks listed on the home page, find the 'home' function at the top,
+          and we'll add a new variable called 'tasks'.
+          Using the imported Task model, we can simply query all tasks found, and if you wanted to,
+          you could have them ordered by the Task.id as well.
+          The only thing left to do on this file, is to pass that list over to the front-end template,
+          which I will also call 'tasks', and set that to our tasks list above.
+
+###### __Materializscss.com__
+    - Now, we need some sort of method to display our tasks, which could be the Materialize
+          cards that we used for the categories.
+          However, given that our Tasks contain more information than the categories, I'm going
+          to use something different called 'collapsibles', like an accordion found within Bootstrap.
+          As you can see from the Materialize docs, their collapsibles are simply just unordered-lists with list-items.
+          They've included an icon, and the text within the 'collapsible-header' element is displayed to users.
+          Once clicked, the collapsible will expand, and then display the text provided within
+          the 'collapsible-body' element.
+          This is perfect for our situation, so let's copy the entire code snippet, and we'll go
+          ahead and paste this within our tasks.html template below the existing row.
+
+###### __tasks.html__
+    - Due to the fact that we will have an unknown number of tasks, we should create a for-loop
+          over each task, and have it dynamically add a list-item for each Task from the database.
+          Let's delete 2 of the 3 list-items, and let's provide a more suitable icon as well, which
+          will be a downward facing caret or chevron symbol to signify more content is available.
+          Also, feel free to style this with whatever helper color class you'd like, but I'm going
+          to stick with this overall blue theme with white-text.
+          This for-loop will iterate over each task within our list of all tasks.
+          Since we only want the list-item to be generated for each task, let's wrap the list-item inside
+          of our for-loop, making sure not to put the
+          element inside of the loop.
+          Be sure to also close the {% endfor %} between the closing and closing tags.
+          Obviously we want to display the actual task name, so let's add the variable {{ task.task_name
+          }} inside of tags, since that's the column header we assigned in the models.py file.
+          We can also add the due date as well, using the database column header of 'due_date'.
+          Some of our tasks might be marked as urgent, so we can include a conditional check to see
+          if the 'task.is_urgent' is set to True.
+          If it is true, meaning our task is an urgent task, then we can include an icon to highlight the fact that it's urgent.
+          As for the collapsible-body, let's remove the
+          element, and add our own content.
+          We can start by adding the specific task category wrapped inside of tags to make it bold.
+          Underneath that, we'll add a new paragraph tag, which will be where we include the 'task_description'
+          that explains the details about the task.
+          Before we can test everything, there's one more thing we need to do with our collapsibles,
+          which is to initialize them via JavaScript.
+
+###### __back to matrerialize to copy javascript code__
+    - Go back to the Materialize site, and let's copy the code that will initialize our collapsible elements.
+        Paste that within your custom JavaScript file,
+
+###### __script.js__
+    - and I'm going to call this variable 'collapsibles', then initialize that below.
 
 
+Save all of your changes, and if the app isn't currently running in your Terminal, go ahead and start it.
+Remember, since we've added custom JavaScript, you might need to hard-reload the page in
+order for the static files on our browser to be updated.
 
 
+###### __live site__
+    - if you recall, we opted for a specific date format when selecting a date from the datepicker,
+          but you may have noticed that it's not displaying properly on our list.
+          The templating engine we're using called Jinja actually comes with a helpful method of '.strftime()'
+          which stands for "string from time".
+          This is a Python directive that you can use within your Python files as well, and allows
+          you to format dates and times to your preference.
 
+###### __back to tasks.html__
+          To see a full list of format options, visit strftime.org, which can be found in the link below this video.
+          In our case, the format we opted for was Date Month, comma, Year, so that would be the format
+          of "%d %B, %Y", making sure to be careful with case-sensitivity.
+          Another thing we could add, is the Jinja filter of "|sort()" which will allow us to sort our tasks.
+          You can find a link below this video for a list of the built-in Jinja filters.
+          Clicking on "sort", you can see a few ways to use this, including the parameter of "attribute"
+          using dot-notation from our database.
+          Let's go ahead and use the sort filter on our for-loop, and for the attribute, we'll
+          have it sort by the "due_date" column.
+          Feel free to explore the other filters, and we encourage you to use some of these on your own projects in the future.
 
+Go ahead and save those changes, and reload the live preview page.
+As you can see, our date format is correct this time, and all of the tasks have been sorted by the date.
+The final thing to mention on this video, is converting your database queries into actual Python lists.
+Whenever you query the database, you actually get something returned called a Cursor Object,
+sometimes called a QuerySet.
+In some cases, you can't use a Cursor Object on the front-end, or with some of the Jinja template filters.
+Oftentimes, it's actually better to convert your queries into Python lists.
+Let's navigate to our routes.py file, and since we want this to occur only for queries
 
+###### __back to routes.py__
+    - since we want this to occur only for queries
+          that have more than one result, let's find any that end with '.all()'.
+          As you can see, we've been doing this already, which is considered best 
+          practice, wrapping any query in a Python list().
 
+###### __end of stage 8__
+    - By now, we have full CRUD functionality for our Categories table, and we're halfway through
+          the CRUD functionality for the Tasks table.
+          Users are able to create and read tasks from the database.
+          We still need to allow users to update and delete tasks, 
+          so in the next stage, we will focus on updating tasks.
 
+### __STAGE 9 UPDATE - UPDATING TASKS__
