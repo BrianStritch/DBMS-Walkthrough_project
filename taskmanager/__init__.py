@@ -1,5 +1,7 @@
 # We will start by importing the following: # noqa
 import os
+#this import re is used for deployment on heroku
+import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -47,11 +49,17 @@ app = Flask(__name__)
 # 2
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 # 5 this conditional if statement was added for deployment to heroku
-# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")  -- this was original line
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL") -- this was original line  # noqa
 if os.environ.get("DEVELOPMENT") == "True":
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")    
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
 else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    # this variable uri is added for deployment to heroku 
+    uri = os.environ.get("DATABASE_URL")
+    # this conditional statement was added for deployment as path to DB was wrong in heroku
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = uri # heroku   
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL") - this was original - #noqa
 # 3
 db = SQLAlchemy(app)
 # 4
