@@ -1278,12 +1278,41 @@ __submitting any milestone projects for assessment.__
           ‘uri’, which will grab the environment variable from Heroku.
           If the uri starts with postgres://, then we need to update the uri variable and replace
           that with itself, but this time making sure to include “ql” so it reads postgresql.
-          Now, we just simply replace the original value, with our new ‘uri’ variable.
+
+Now, we just simply replace the original value, with our new ‘uri’ variable.
+Go ahead and add those changes, commit them, and then push to GitHub.
+
+    8. After we can see the updates being made on Heroku’s Activity tab, and the build is
+          complete, the final step we need to perform is to create our tables on the database.
+          Scroll to the top, and click the "More" dropdown button, then select "Run console".
+          In the same way that we connected our local database at the beginning, we need to do the same within Heroku now.
+          "python3" to access the Python interpreter.
+          from taskmanager import db db.create_all()
+          Our Heroku database should now have the tables and columns created from our models.py file,
+          so we can exit() this console.
+
+Remember, if you make any changes to your models anytime during development once deployed
+to Heroku, you will need to make these migrations once again in this Heroku console.
+
+    9. Everything should be linked up properly now, so we can finally click on the "Open App" button.
+          Wonderful, the deployed site is now available, and should automatically update whenever we
+          push changes to our GitHub repository.
+
+As you can see, there are no tasks or categories on our site, because this is a brand new database,
+and all of the original items are only stored within our local database.
+We would need to add new categories and tasks on this database, since the others will not have been transferred over.
+It's highly recommended to deploy your application early, such as the very beginning of your
+project initiation, and not leave it until the last minute.
+Leaving Heroku deployment until the last minute can cause unwanted stress, and you can possibly run into unwanted errors.
 
 
-
-
-
+### __END OF MINI PROJECT WALKTHROUGH__
+     Congratulations!
+     This concludes the entire Task Manager mini-project.
+     Together, we've learned how to set up a Flask project using SQLAlchemy's ORM with our own custom database schema.
+     We also covered full CRUD functionality for both of our models: Task and Category.
+     Finally, we've seen how to set up automatic deployment from GitHub to Heroku, so any future
+     changes we make will sync automatically to our deployed site.
 
 
 
